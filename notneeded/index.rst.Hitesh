@@ -15,11 +15,6 @@ Welcome to the |classbold| lab at F5 Agility |year|
    :glob:
 
    intro*
-   Lab2*
-   Lab3*
-   Lab4*
-   Lab5*
-   Lab6*
-   Lab7*
-   Lab8*
-   Lab9*
+   class*/class*
+   examples
+   markdown
