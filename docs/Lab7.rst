@@ -1,48 +1,59 @@
-*Lab 7 – Provision the ASM Module*
-==================================
+*Lab 7 – Creating a clientssl Profile*
+====================================
 
-1. .. rubric:: *Provision the ASM Module*
-      :name: lab-7---provision-the-asm-module
+1. .. rubric:: *Create a clientssl profile*
+      :name: lab-6---creating-the-default-passwords
       :class: H1
 
-The bigip is currently only provisioned for LTM. We will be using a WAF
-(Web Application Firewall) policy in a later lab which requires the
-provisioning of the ASM module (Application Security Module)
+A clientssl profile consists of a digital certificate and a private key.
+Adding a clientssl profile to a virtual server will cause the bigip to
+decrypt client connections as they come into the VIP.
 
- Review the provision Playbook
-------------------------------
+Now that we have a certificate and key pushed up to the bigip, we can
+create a clientssl profile.
 
-Go into the GUI of bigip1 and go to System -> Resource Provisioning.
-Notice that only LTM is provisioned.
+Review the create\_clientssl\_profile Playbook
+----------------------------------------------
 
-Open the provision.yml playbook. Notice that it contains one play that
-will provision ASM onto bigip1.
+Open the create\_clientssl\_profile playbook. Verify that all the
+variables are correct for your environment.
 
-It uses the F5 bigip\_provision module. This module will not let the
-play finish until the bigip is ready to accept another API call. This is
-important. If there were other plays in this book we would not want them
-to execute until the bigip was ready for the next command. That is the
-power of using a specific module rather than a generic module such as
-“bigip\_command”. Only use generic modules when the exact one for your
-task is not available.
+Notice that the variable “cert\_chain” has a placeholder of “xxxxxx” and
+that the “chain” under cert\_key\_chain” has been commented out with a
+hashtag. That is because we will not be using a chain certificate. If in
+the future, you needed to add one you would simply upload it to the
+bigip and then enter the correct variable name and uncomment the chain:
+"{{cert\_chain}}" line.
 
-Close the playbook and run it. Notice that it appears to hang . It will
-not relinquish to a next task until the F5 is ready to accept it.
+Notice the ciphers line. ciphers:
+"!SSLv3:!SSLv2:ECDHE+AES-GCM+SHA256:ECDHE-RSA-AES128-CBC-SHA"
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+We are setting the desired ciphers within the playbook. We are turning
+off unsecure ciphers such as SSLv2 and SSLv3 and we are specifying the
+list of ciphers that we want to support. This is a secure set of ciphers
+that would get your website an A+ rating by SSLlabs.
 
-This will take a couple of minutes. Time to get some more coffee!
+Go into the GUI under Local Traffic -> Profiles -> SSL -> Client and
+look at the existing clientssl profiles. There should be 5 default
+clientssl profiles.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Run the create\_clientssl\_profile Playbook
+-------------------------------------------
 
-Once the play finishes and you see the PLAY RECAP, go back to the GUI of
-bigip1.
+Run the create\_clientssl\_profile playbook. Go back into the GUI of
+bigip1 and verify that there is now a new clientssl profile named
+“agility2018\_clientssl”.
 
-Go to System -> Resource Provisioning and notice that the ASM module is
-now provisioned.
+Click the profile to open it up.
 
-Provisioning a new module re-distributes the memory, CPU and storage, it
-also causes the system to restart daemons. You never want to provision
-modules during production as this would cause a 1 to 2-minute outage.
+Notice next to “Certificate Key Chain” that the f5agility2018
+certificate and key were used for this profile.
 
-You may now move on to the next lab.
+Click the “custom” check box on the right to ungray the “Configuration”
+section. Now change this section from “basic” to “advanced”.
+
+Notice that a new section popped up under the “Certificate Key Chain”
+named “ciphers”.
+
+Notice that instead of the ciphers being “DEFAULT” that they contain the
+strong ciphers we specified in the playbook.

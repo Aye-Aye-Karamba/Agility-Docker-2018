@@ -1,59 +1,78 @@
-*Lab 6 – Creating a clientssl Profile*
-====================================
-
-1. .. rubric:: *Create a clientssl profile*
-      :name: lab-6---creating-the-default-passwords
+*Lab 6 - Push a Certificate and Key to the F5*
+==============================================
+1. .. rubric:: *Push a Certificate and Key to the Bigip*
+      :name: lab-5-push-a-certificate-and-key-to-the-bigip
       :class: H1
 
-A clientssl profile consists of a digital certificate and a private key.
-Adding a clientssl profile to a virtual server will cause the bigip to
-decrypt client connections as they come into the VIP.
+   1. .. rubric:: Review the push\_cert\_and\_key\_to\_bigip Playbook
+         :name: review-the-push_cert_and_key_to_bigip-playbook
+         :class: H2
 
-Now that we have a certificate and key pushed up to the bigip, we can
-create a clientssl profile.
+Open the “push\_cert\_and\_key\_to\_bigip” playbook. Notice that we are
+only addressing one bigip in this playbook. The reason is we already
+have an active/standby configuration. This means we can now perform all
+none network configuration changes on one device and sync that
+configuration to the other device.
 
-Review the create\_clientssl\_profile Playbook
-----------------------------------------------
+Notice that there are two tasks or “plays” in this playbook. The first
+will be pushing a certificate to the bigip to be used in creating a
+clientssl profile so that the application VIP can perform SSL offload.
+This play is using the F5 “bigip\_ssl\_certificate” module.
 
-Open the create\_clientssl\_profile playbook. Verify that all the
-variables are correct for your environment.
+Notice that all the variables are defined under “vars” and that these
+variables are called out in the module using the name of the variable in
+between quotes and curly braces. “{{ }}” This is a better practice than
+hard coding all the variables within the plays themselves. By doing
+this, you know you only have to change what is under the “vars” section.
 
-Notice that the variable “cert\_chain” has a placeholder of “xxxxxx” and
-that the “chain” under cert\_key\_chain” has been commented out with a
-hashtag. That is because we will not be using a chain certificate. If in
-the future, you needed to add one you would simply upload it to the
-bigip and then enter the correct variable name and uncomment the chain:
-"{{cert\_chain}}" line.
+Notice the “content” line in both plays. The certificate and key we will
+be using is located under /var/tmp on the Ansible host. Verify that the
+certificate and key are in /var/tmp and that the names match the names
+defined under the vars section of the playbook.
 
-Notice the ciphers line. ciphers:
-"!SSLv3:!SSLv2:ECDHE+AES-GCM+SHA256:ECDHE-RSA-AES128-CBC-SHA"
+Once you have confirmed that the variables are correct for your
+environment and that the files are located in the proper directory with
+the correct spelling, close the playbook.
 
-We are setting the desired ciphers within the playbook. We are turning
-off unsecure ciphers such as SSLv2 and SSLv3 and we are specifying the
-list of ciphers that we want to support. This is a secure set of ciphers
-that would get your website an A+ rating by SSLlabs.
+Now log into the GUI of the both bigips. Go to System -> File Management
+-> SSL Certificate List.
 
-Go into the GUI under Local Traffic -> Profiles -> SSL -> Client and
-look at the existing clientssl profiles. There should be 5 default
-clientssl profiles.
+Notice that there are 3 default entries but no “RSA Certificate & Key”
+named “f5agility2018”
 
-Run the create\_clientssl\_profile Playbook
--------------------------------------------
+|image14|
 
-Run the create\_clientssl\_profile playbook. Go back into the GUI of
-bigip1 and verify that there is now a new clientssl profile named
-“agility2018\_clientssl”.
+Run the push\_cert\_and\_key\_to\_bigip Playbook
+------------------------------------------------
 
-Click the profile to open it up.
+Go back to SSH session on the Ansible machine and run the playbook.
 
-Notice next to “Certificate Key Chain” that the f5agility2018
-certificate and key were used for this profile.
+*ansible-playbook push\_cert\_and\_key\_to\_bigip.yml*
 
-Click the “custom” check box on the right to ungray the “Configuration”
-section. Now change this section from “basic” to “advanced”.
+Did your playbook finish successfully? If so go back to the GUI. Is
+there a new entry under SSL Certificate List for f5agility2018?
 
-Notice that a new section popped up under the “Certificate Key Chain”
-named “ciphers”.
+Re-open the playbook and change the “state” under vars from “present” to
+“absent”. Rerun the playbook and check the GUI. Is the f5agility2018
+certificate and key gone?
 
-Notice that instead of the ciphers being “DEFAULT” that they contain the
-strong ciphers we specified in the playbook.
+Re-open the playbook and change the state back to present and re-run the
+playbook. Verify that the f5agility2018 certificate and key bundle are
+back.
+
+Notice in the top left of the GUI that the sync status is “changes
+pending”. Log into the second bigip GUI and look at System -> File
+Management -> SSL Certificate List. The agility2018 RSA cert/key bundle
+is not there.
+
+Run the config-sync playbook.
+
+*ansible-playbook config-sync.yml*
+
+Go back and look at both GUIs. The state has changed to “in sync” and
+both devices have the cert/key bundle.
+
+
+.. |image14| image:: media/image15.png
+   :width: 6.53194in
+   :height: 1.15069in
