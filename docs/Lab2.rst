@@ -10,7 +10,7 @@
          :name: setting-up-the-connectivity-between-ansible-and-the-f5s.
          :class: H2
 
-Using putty on your Windows desktop, start an SSH session to the Ansible
+Using putty on your Windows jump server desktop, start an SSH session to the Ansible
 machine.
 
 We will configure Ansible for use with our bigips.
@@ -57,10 +57,14 @@ will create an SSH connection to both F5s using the username and
 password specified and verify that Ansible can successfully interact
 with the F5s.
 
+Remember we have a heading of [bigip] in the /etc/ansible/hosts file. By
+specifying "bigip" in the ansible ping command we are telling ansible to
+only "ping" the devices under the [bigip] heading.
+
 |image6|
 
 Since the Ansible workstation has never connected to the F5s, this will
-fail.
+fail. We need to add the RSA fingerprint to our known_hosts file.
 
 From Ansible, ssh as root to each of your bigips with password “default”
 and type yes to accept the RSA fingerprint.
@@ -69,11 +73,13 @@ Example: *ssh root@bigip1*
 
 |image7|
 
-Now retry the *ansible -m ping bigip command*.
+Now retry the *ansible -m ping bigip command*. Make sure you have
+logged out of the bigips and are back to the Ansible bash shell.
 
 |image8|
 
-Now Ansible can communicate with the F5s.
+Now Ansible can communicate with the F5s and can make reads and writes
+to the devices.
 
 Review the ansible.cfg Config File
 ----------------------------------

@@ -15,6 +15,13 @@ in the /etc/ansible/hosts file and the second registration key for the
 second Bigip. You could also use bigip1 and bigip2. Save and close this
 file.
 
+Notice that this playbook is using the Ansible “raw” module rather than
+F5 written modules. It is always best to use modules written by the
+vendor but in cases where there is no vendor written modules for your
+desired task, you can always use Ansible written modules. In this case
+the Ansible "raw" module let's us use a native command. We are calling the
+licensing script "SOAPLicenseClient".
+
 Access the GUI of the bigips from Chrome on the Jump server. Logon is
 admin/Agility1. Verify that both your bigips are not licensed.
 
@@ -39,11 +46,6 @@ licensed in one pass.
 
 Notice that what was written in the playbook under tasks and after
 *-name* is echoed to the screen.
-
-Notice that this playbook is using the Ansible “raw” module rather than
-F5 written modules. It is always best to use modules written by the
-vendor but in cases where there is no vendor written modules for your
-desired task, you can always use Ansible written modules.
 
 At a later time, be sure to go to https://docs.ansible.com to take a
 look at all the modules that are available for use.

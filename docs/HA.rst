@@ -2,6 +2,10 @@
 *Lab 5 – Creating a High Availability Configuration*
 ====================================================
 
+1. .. rubric:: *Creating a High Availability Configuration*
+      :name: lab-5---creating-HA-config
+      :class: H1
+
 There are over 70 steps to configuring bigips into an active/standby
 pair. Network configuration is unique to each device and must be
 addressed independently. Once an HA configuration has been completed all
@@ -20,7 +24,7 @@ understand what is going on.
 
 Notice at the top under “vars” all the variables that will be used in
 this playbook. Variables can be in the playbook itself as in this case.
-Or it can be a separate file that is referenced under “vars”
+Or it can be a separate file that is referenced as “vars_file”
 
 You could also change “vars” to “vars\_prompt” and the user executing
 the playbook would be prompted for an answer to each variable before the
@@ -61,14 +65,30 @@ This example should also have a statement at the same indent as password
 with “validate\_certs: no”
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+|image12|
+
+Run the f5\_active-standby Playbook
+-----------------------------------
+
+Run the f5\_active-standby playbook with the following command:
+
+*ansible-playbook f5\_active-standby.yml*
 Watch the TASK messages as the playbook runs to see the configuration
 attributes that are occurring. Your play recap should look like below.
 
 |image13|
 
-Log into the GUI of both bigips. You now have an active/standby
-configuration with one device as active and the other in standby and
-both show “in sync”.
+Log into the GUI of both bigips. Notice that each F5 has a unique FQDN
+for the hostname and you now have an active/standby configuration with 
+one device as active and the other in standby and both show as “in sync”.
+
+Log into each f5 device from the GUI and look at the vlans and self ips
+under Network. You can see that all the networking is in place.
+
+.. |image12| image:: media/image13.png
+   :width: 4.60494in
+   :height: 2.58887in
 
 .. |image13| image:: media/image14.png
    :width: 6.53194in

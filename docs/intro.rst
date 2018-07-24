@@ -43,6 +43,10 @@ Logon is:
 
 -  Password: Agility1.
 
+As you attempt to login, your RDP client will have the username last used. 
+You may need to click on "More choices" and then "Use a different account"
+to enter the correct username and password.
+
 Once your Remote Desktop session has started. You may access both Bigips
 GUI using the shortcuts seen in the Chrome browser on your Windows
 desktop.

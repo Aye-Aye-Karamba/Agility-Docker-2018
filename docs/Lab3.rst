@@ -21,13 +21,15 @@ following default users and credentials.
 
    -  Password: default
 
-From the Ansible CLI cd into the ansible/playbooks/Agility1 directory.
+From the Ansible CLI, cd into the ansible/playbooks/Agility2018 directory.
 This is where all the playbooks are. Open the change\_password playbook.
 
 You will remember that we set the credentials for Ansible to use in the
 /etc/ansible/hosts file. Ansible uses SSH to connect to the bigips so we
-used the CLI credentials of root/default. The F5 modules use the GUI
-credentials when they access the bigip which by default is admin/admin.
+used the CLI credentials of root/default. 
+
+The F5 modules use the GUI credentials when they access the bigip which
+by default is admin/admin.
 
 Notice under the line “vars” We are setting variables for our playbook.
 The F5 module requires the GUI credentials to be set within the module.
@@ -46,6 +48,7 @@ The second play is going to change the root password. Notice that the
 change it in this play or the playbook would not successfully complete
 the second task.
 
+Ansible playbooks are run from the CLI using the "ansible-playbook" command.
 From the CLI run the following command:
 
 *ansible-playbook change\_passwords.yml*
@@ -54,13 +57,22 @@ Your play recap should look like the following.
 
 |image9|
 
+Keep in mind that Ansible has tab completion. So you don't have to
+type the entire command. For example, ans <hit tab> -pl <hit tab> etc...
+
 Now that the passwords for both accounts have been changed on both
 devices we need to update our /etc/ansible/hosts file and change the
 password for root from default to Agility1.
 
 Open the /etc/ansible/hosts file and notice at the end of the last two
-lines that the password is set to default. Close this file. Now run the
-playbook named ansible\_hostsfile\_newpass.yml with the following
+lines that the password is set to default. Close this file. 
+
+Open the "ansible_hostsfile_newpass.yml" playbook. Notice that these plays
+are addressing the Ansible host itself rather than the bigips. Thats why
+we see the username as "f5". We are using the Ansible module "lineinfile"
+to change the last word in the line from default to Agility1.
+
+Now run the playbook named ansible\_hostsfile\_newpass.yml with the following
 command.
 
 *ansible-playbook ansible\_hostsfile\_newpass.yml*

@@ -30,6 +30,10 @@ be using is located under /var/tmp on the Ansible host. Verify that the
 certificate and key are in /var/tmp and that the names match the names
 defined under the vars section of the playbook.
 
+You can easily see this with the following bash command.
+
+*ls -al /var/tmp*
+
 Once you have confirmed that the variables are correct for your
 environment and that the files are located in the proper directory with
 the correct spelling, close the playbook.

@@ -52,16 +52,15 @@ Application Firewall” policies named:
 
 -  Linux-high
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-NOTE: Currently the app-svcs-iapp does not create the clientssl profile
-for you. That is why we did so in the previous lab. At a later date the
-app-svcs-iapp may be updated to create the clientssl profile for you. If
-that happens you would no longer use the “create\_clientssl\_profile”
-playbook but you would still use the “push\_cert\_and\_key\_to\_bigip”
-playbook to stage the files for the iApp to use.
+.. NOTE::
+    Currently the app-svcs-iapp does not create the clientssl profile
+    for you. That is why we did so in the previous lab. At a later date the
+    app-svcs-iapp may be updated to create the clientssl profile for you. If
+    that happens you would no longer use the “create\_clientssl\_profile”
+    playbook but you would still use the “push\_cert\_and\_key\_to\_bigip”
+    playbook to stage the files for the iApp to use.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now open and review the “deploy\_app\_svcs\_waf” playbook.
 
@@ -102,7 +101,7 @@ In the
 Open the waf\_final.json file and review it.
 
 -  Which ASM policy is currently defined to be attached the application?
-   Low, medium or high?
+   Low, medium or high? Type /bundled:linux to jump to that line.
 
 -  Are there any pool members defined? How many?
 
@@ -172,9 +171,14 @@ Run the deploy\_app\_svcs\_waf playbook.
 
     |image18|
 
--  Once the component view is display again go back to Security ->
+-  Once the component view is displayed again, go back to Security ->
    Application Security -> Security Policies. Notice that the *medium*
    policy is now applied to the vip.
+
+.. NOTE::
+    The GUI takes a minute to refresh after "reconfiguring". Continue to 
+    refresh the page until you see all 3 WAF policies again and confirm
+    that the current policy is now the medium.
 
 -  Go back to the deploy\_app\_svcs\_waf playbook and change the “state”
    under “vars” to “absent”. Notice that the second task uses a variable
@@ -185,13 +189,16 @@ Run the deploy\_app\_svcs\_waf playbook.
 
 -  Re-run the deploy\_app\_svcs\_waf playbook.
 
--  Notice the PLAY RECAP is yellow showing that there has been a change.
+-  Notice the PLAY RECAP has one yellow showing that there has been a change.
+   You can look at the yellow task above and see the change was while deploying
+   the iApp.
 
 -  Go back to the iApps applications. Notice that the application
    service is gone.
 
 -  Click on the “Create” button. From the template drop down look for
-   the appsvcs\_integration\_v2.0.004\_test iApp. It is still there.
+   the appsvcs\_integration\_v2.0.004\_test iApp. It is still there as
+   we hard coded it to remain.
 
    1. .. rubric:: – Using include to build a workflow
          :name: using-include-to-build-a-workflow

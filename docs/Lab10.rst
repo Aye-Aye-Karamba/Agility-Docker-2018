@@ -1,8 +1,8 @@
 *Lab 10 – Opening a support case with F5*
 =========================================
 
-1. .. rubric:: *Adding an Application using an iApp Template*
-      :name: lab-9---open-support-case-with-f5
+1. .. rubric:: *Opening a Support Case with F5*
+      :name: lab-10---open-support-case-with-f5
       :class: H1
 
 Opening a support case always involves creating and downloading a qkview
@@ -18,11 +18,12 @@ Review the “fetch\_qkview” playbook. This playbook will create a qkview
 it to the Ansible machines /tmp directory.
 
 Check the Ansible /tmp directory and verify that there is no qkview file
-name agility\_bkup.ucs.
+name agility\_backup.ucs.
 
 Run the fetch\_qkview playbook.
 
 Verify that the file now exists in the Ansible /tmp directory.
+This command will take a minute or so as it is collecting data.
 
 – Programmatically running and downloading a tcpdump
 ----------------------------------------------------
@@ -38,6 +39,7 @@ to only capture icmp packets.
 
 Start an SSH session to bigip1. Now start a ping to 10.1.30.2. This is
 the ha\_selfip on bigip2. You should see successful pings.
+Keep the ping running.
 
 Go back to Ansible and run the “tcpdump\_from\_F5” playbook. Once the
 screen shows the message, “Pausing for 60 seconds”, wait about 10
