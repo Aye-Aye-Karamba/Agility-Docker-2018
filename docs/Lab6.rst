@@ -8,7 +8,7 @@
          :name: review-the-push_cert_and_key_to_bigip-playbook
          :class: H2
 
-Open the “push\_cert\_and\_key\_to\_bigip” playbook. Notice that we are
+Open the “push\_cert\_key\_to\_bigip” playbook. Notice that we are
 only addressing one bigip in this playbook. The reason is we already
 have an active/standby configuration. This means we can now perform all
 none network configuration changes on one device and sync that

@@ -40,9 +40,12 @@ clientssl profiles.
 Run the create\_clientssl\_profile Playbook
 -------------------------------------------
 
-Run the create\_clientssl\_profile playbook. Go back into the GUI of
-bigip1 and verify that there is now a new clientssl profile named
-“agility2018\_clientssl”.
+Run the create\_clientssl\_profile playbook. 
+
+*ansible-playbook create_clientssl_profile.yml*
+
+Go back into the GUI of bigip1 and verify that there is now a new 
+clientssl profile named “agility2018\_clientssl”.
 
 Click the profile to open it up.
 

@@ -21,7 +21,7 @@ following default users and credentials.
 
    -  Password: default
 
-From the Ansible CLI, cd into the ansible/playbooks/Agility2018 directory.
+From the Ansible CLI, cd into the /home/f5/ansible/playbooks/Agility2018 directory.
 This is where all the playbooks are. Open the change\_password playbook.
 
 You will remember that we set the credentials for Ansible to use in the
